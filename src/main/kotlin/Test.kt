@@ -28,6 +28,13 @@ fun main() {
     log(example.p)
     lazyValue
     lazyValue
+    val user = User()
+    user.name = "1"
+    user.name = "2"
+    user.optionalName = "11"
+    user.optionalName = "22"
+    user.optionalName = "21"
+    user.optionalName = "33"
 
 }
 
@@ -51,4 +58,13 @@ val lazyValue : String by lazy {
     "Hello"
 }
 
+class User {
+    var name: String by Delegates.observable("초기값") { prop, old, new ->
+        println("$old -> $new")
+    }
+    var optionalName: String by Delegates.vetoable("초기값"){property, oldValue, newValue ->
+        println("$oldValue -> $newValue")
+        newValue.contains("1")
+    }
+}
 
