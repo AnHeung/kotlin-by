@@ -1,3 +1,6 @@
+import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
+
 interface Base {
     val message: String
     fun print()
@@ -19,8 +22,26 @@ fun main() {
     val derived = Derived(b)
     derived.print()
     log(derived.message)
+    val example = Example().also {
+        it.p = "test"
+    }
+    log(example.p)
 
 }
 
+
+class Example {
+    var p: String by Delegate()
+}
+
+class Delegate {
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
+        return "$thisRef, thank you for delegating '${property.name}' to me!"
+    }
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
+        println("$value has been assigned to '${property.name}' in $thisRef.")
+    }
+}
 
 
