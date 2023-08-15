@@ -22,15 +22,18 @@ fun main() {
     val derived = Derived(b)
     derived.print()
     log(derived.message)
-    val example = Example().also {
+    Example().also {
         it.p = "test"
+        log(it.p)
     }
-    log(example.p)
+
     lazyValue
     lazyValue
     val user = User()
-    user.name = "1"
-    user.name = "2"
+    user.apply {
+        name ="1"
+        name ="2"
+    }
     user.optionalName = "11"
     user.optionalName = "22"
     user.optionalName = "21"
@@ -39,9 +42,12 @@ fun main() {
     val classWithDelegate = ClassWithDelegate(anotherClassInt = 11)
     val myClass = MyClass(memberInt = 12, anotherClassInstance = classWithDelegate)
     log(myClass.delegatedToMember)
+    log(myClass.callByValue)
     log(myClass.delegatedToTopLevel)
     topLevelInt = 16
-    log(myClass.anotherClassInstance.anotherClassInt)
+    log(myClass.callByValue)
+    log(myClass.delegatedToTopLevel)
+    log(myClass.delegatedToAnotherClass)
     log(myClass.extDelegated)
 
     val myNewClass = MyNewClass()
@@ -79,11 +85,11 @@ class Example {
 
 class Delegate {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
-        return "$thisRef, thank you for delegating '${property.name}' to me!"
+        return "$thisRef 의 '${property.name}' 라는 변수값에 위임받음 "
     }
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
-        println("$value has been assigned to '${property.name}' in $thisRef.")
+        log("$thisRef 안에 '${property.name}' 변수에 $value 가 주입됨.")
     }
 }
 
