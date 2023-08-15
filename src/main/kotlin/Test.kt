@@ -26,6 +26,8 @@ fun main() {
         it.p = "test"
     }
     log(example.p)
+    lazyValue
+    lazyValue
 
 }
 
@@ -42,6 +44,11 @@ class Delegate {
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
         println("$value has been assigned to '${property.name}' in $thisRef.")
     }
+}
+
+val lazyValue : String by lazy {
+    log("hello man~")
+    "Hello"
 }
 
 
