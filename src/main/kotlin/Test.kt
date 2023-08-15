@@ -36,6 +36,40 @@ fun main() {
     user.optionalName = "21"
     user.optionalName = "33"
 
+    val classWithDelegate = ClassWithDelegate(anotherClassInt = 11)
+    val myClass = MyClass(memberInt = 12, anotherClassInstance = classWithDelegate)
+    log(myClass.delegatedToMember)
+    log(myClass.delegatedToTopLevel)
+    topLevelInt = 16
+    log(myClass.anotherClassInstance.anotherClassInt)
+    log(myClass.extDelegated)
+
+    val myNewClass = MyNewClass()
+    myNewClass.run {
+        oldName = 11
+        log(oldName)
+        log(newName)
+    }
+    val map = MapDelegateTest(mapOf(
+        "name" to "kuma",
+        "age"  to 30
+    ))
+
+    map.run {
+        log(name)
+        log(age)
+    }
+    val mutableMap = MutableMapDelegateTest(mutableMapOf(
+        "name" to "kuma",
+        "age"  to 30
+    ))
+
+    mutableMap.name = ""
+    mutableMap.age = 1
+
+    example(true) {
+        Foo(true)
+    }
 }
 
 
@@ -67,4 +101,5 @@ class User {
         newValue.contains("1")
     }
 }
+
 
